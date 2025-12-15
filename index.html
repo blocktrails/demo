@@ -16,6 +16,7 @@
       --code-bg: #161b22;
       --border: #30363d;
       --card-bg: #21262d;
+      --purple: #a371f7;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -60,6 +61,89 @@
     .status-live { background: var(--green); color: #000; }
     .status-pending { background: var(--accent); color: #000; }
 
+    /* Hero section with live balance */
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-card.funded {
+      border-color: var(--green);
+      background: rgba(63, 185, 80, 0.1);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: monospace;
+    }
+    .stat-value.btc { color: var(--accent); }
+    .stat-value.funded { color: var(--green); }
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .loading-pulse { animation: pulse 1.5s infinite; }
+
+    /* How it works */
+    .how-it-works {
+      background: linear-gradient(135deg, rgba(163, 113, 247, 0.1), rgba(247, 147, 26, 0.1));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .how-it-works h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .how-it-works h3::before {
+      content: '✨';
+    }
+    .step-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .step {
+      background: var(--code-bg);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .step.key { color: var(--purple); }
+    .step.state { color: var(--green); }
+    .step.result { color: var(--accent); }
+    .step-arrow {
+      color: var(--muted);
+      font-size: 1.2rem;
+    }
+
     .info-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -85,7 +169,13 @@
       font-size: 0.8rem;
       color: var(--muted);
     }
+    .key-value .code-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
     .key-value code {
+      flex: 1;
       font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
       font-size: 0.85rem;
       background: var(--code-bg);
@@ -94,6 +184,27 @@
       word-break: break-all;
       color: #a5d6ff;
     }
+    .copy-btn {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .copy-btn.copied {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .copy-btn svg { width: 16px; height: 16px; }
     .key-value a {
       color: var(--accent);
       text-decoration: none;
@@ -113,6 +224,13 @@
       font-size: 1.2rem;
       font-weight: 600;
     }
+    .trail-count {
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: var(--code-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+    }
 
     .trail-chain {
       display: flex;
@@ -126,7 +244,7 @@
       border-radius: 12px;
       padding: 1.25rem;
       position: relative;
-      transition: border-color 0.2s;
+      transition: all 0.3s;
     }
     .trail-node:hover {
       border-color: var(--accent);
@@ -136,6 +254,19 @@
     }
     .trail-node.current {
       border-color: var(--green);
+    }
+    .trail-node.new {
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .trail-node.current::after {
       content: 'HEAD';
@@ -240,7 +371,33 @@
     }
     .controls h3 {
       font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .controls-subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
       margin-bottom: 1rem;
+    }
+    .example-states {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .example-btn {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      color: var(--fg);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: monospace;
+    }
+    .example-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
     .control-row {
       display: flex;
@@ -269,14 +426,19 @@
       padding: 0.75rem 1.5rem;
       font-weight: 600;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: all 0.2s;
     }
     .control-row button:hover {
       opacity: 0.9;
+      transform: scale(1.02);
     }
     .control-row button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
+    }
+    .control-row button:active:not(:disabled) {
+      transform: scale(0.98);
     }
     .control-hint {
       font-size: 0.8rem;
@@ -326,6 +488,26 @@
       color: var(--red);
       margin-bottom: 1rem;
     }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--green);
+      color: #000;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -335,15 +517,68 @@
     <h1>Blocktrails Demo <span class="status-badge status-live">Testnet4</span></h1>
     <p class="tagline">Live demonstration of Nostr-native state on Bitcoin.</p>
 
+    <!-- Live stats hero -->
+    <div class="hero-stats">
+      <div class="stat-card" id="balance-card">
+        <div class="stat-label">Genesis Balance</div>
+        <div class="stat-value btc loading-pulse" id="balance-value">...</div>
+        <div class="stat-sub" id="balance-sub">Loading from mempool.space</div>
+      </div>
+      <div class="stat-card" id="status-card">
+        <div class="stat-label">Chain Status</div>
+        <div class="stat-value" id="status-value">...</div>
+        <div class="stat-sub" id="status-sub">Checking...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">States in Trail</div>
+        <div class="stat-value" id="state-count">1</div>
+        <div class="stat-sub">Advance state below</div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="how-it-works">
+      <h3>How Blocktrails Work</h3>
+      <div class="step-flow">
+        <span class="step key">base_key</span>
+        <span class="step-arrow">+</span>
+        <span class="step state">sha256(state)</span>
+        <span class="step-arrow">=</span>
+        <span class="step result">new_key</span>
+        <span class="step-arrow">→</span>
+        <span class="step result">P2TR address</span>
+      </div>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted);">
+        Each state creates a unique Bitcoin address. Spending from that address proves the state transition.
+        The chain of spends <em>is</em> the state history — immutably ordered by Bitcoin.
+      </p>
+    </div>
+
     <div class="info-card">
       <h3>Demo Configuration</h3>
       <div class="key-value">
         <label>Base Public Key (npub-compatible)</label>
-        <code id="pubkey-base">Loading...</code>
+        <div class="code-row">
+          <code id="pubkey-base">Loading...</code>
+          <button class="copy-btn" onclick="copyToClipboard('pubkey-base')" title="Copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="key-value">
-        <label>Genesis Address (fund this to start)</label>
-        <code id="genesis-address">Loading...</code>
+        <label>Genesis Address</label>
+        <div class="code-row">
+          <code id="genesis-address">Loading...</code>
+          <button class="copy-btn" onclick="copyToClipboard('genesis-address')" title="Copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
         <a id="genesis-mempool" href="#" target="_blank" class="mempool-link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -358,6 +593,7 @@
     <div class="trail-container">
       <div class="trail-header">
         <h2>State Chain</h2>
+        <span class="trail-count" id="trail-count">1 state</span>
       </div>
       <div id="trail-chain" class="trail-chain">
         <div class="loading">Initializing demo...</div>
@@ -365,15 +601,25 @@
     </div>
 
     <div class="controls">
-      <h3>Advance State (Simulation)</h3>
+      <h3>Advance State</h3>
+      <p class="controls-subtitle">Try clicking an example or enter your own JSON state:</p>
+      <div class="example-states">
+        <button class="example-btn" onclick="setExample(1)">{"counter": 1}</button>
+        <button class="example-btn" onclick="setExample(2)">{"msg": "hello"}</button>
+        <button class="example-btn" onclick="setExample(3)">{"transfer": "alice"}</button>
+        <button class="example-btn" onclick="setExample(4)">{"nonce": 42}</button>
+      </div>
       <div class="control-row">
         <input type="text" id="new-state" placeholder='{"counter": 1, "message": "Hello"}'>
-        <button id="advance-btn" onclick="advanceState()">Advance</button>
+        <button id="advance-btn" onclick="advanceState()">Advance →</button>
       </div>
       <p class="control-hint">
-        This simulates state transitions locally. On-chain transactions require signing and broadcasting.
+        Each advance creates a new derived address. In production, spending from the previous address proves the transition.
       </p>
     </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">State advanced!</div>
 
     <div class="footer">
       <p>
@@ -406,6 +652,7 @@
 
     // Mempool explorer base URL (testnet4)
     const MEMPOOL_BASE = 'https://mempool.space/testnet4';
+    const MEMPOOL_API = 'https://mempool.space/testnet4/api';
 
     // ============================================
     // Core Blocktrails Functions
@@ -559,16 +806,18 @@
     // ============================================
 
     let trail;
+    let lastNodeCount = 0;
 
     function truncate(str, len = 16) {
       if (str.length <= len * 2 + 3) return str;
       return str.slice(0, len) + '...' + str.slice(-len);
     }
 
-    function renderTrailNode(node, isGenesis, isCurrent) {
+    function renderTrailNode(node, isGenesis, isCurrent, isNew) {
       const classes = ['trail-node'];
       if (isGenesis) classes.push('genesis');
       if (isCurrent) classes.push('current');
+      if (isNew) classes.push('new');
 
       let stateDisplay;
       try {
@@ -623,11 +872,136 @@
       let html = '';
       nodes.forEach((node, i) => {
         if (i > 0) html += renderArrow();
-        html += renderTrailNode(node, i === 0, i === nodes.length - 1);
+        const isNew = i >= lastNodeCount && lastNodeCount > 0;
+        html += renderTrailNode(node, i === 0, i === nodes.length - 1, isNew);
       });
 
       container.innerHTML = html;
+      lastNodeCount = nodes.length;
+
+      // Update state count
+      document.getElementById('state-count').textContent = nodes.length;
+      document.getElementById('trail-count').textContent = `${nodes.length} state${nodes.length !== 1 ? 's' : ''}`;
     }
+
+    // ============================================
+    // Live Balance Fetching
+    // ============================================
+
+    async function fetchBalance(address) {
+      try {
+        const res = await fetch(`${MEMPOOL_API}/address/${address}`);
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+
+        const funded = data.chain_stats.funded_txo_sum || 0;
+        const spent = data.chain_stats.spent_txo_sum || 0;
+        const balance = funded - spent;
+        const txCount = data.chain_stats.tx_count || 0;
+
+        return { balance, txCount, funded };
+      } catch (err) {
+        console.error('Failed to fetch balance:', err);
+        return null;
+      }
+    }
+
+    function formatSats(sats) {
+      if (sats >= 100_000_000) {
+        return (sats / 100_000_000).toFixed(2) + ' BTC';
+      } else if (sats >= 1_000_000) {
+        return (sats / 1_000_000).toFixed(2) + 'M sats';
+      } else if (sats >= 1_000) {
+        return (sats / 1_000).toFixed(1) + 'k sats';
+      }
+      return sats.toLocaleString() + ' sats';
+    }
+
+    async function updateBalanceDisplay(address) {
+      const balanceValue = document.getElementById('balance-value');
+      const balanceSub = document.getElementById('balance-sub');
+      const balanceCard = document.getElementById('balance-card');
+      const statusValue = document.getElementById('status-value');
+      const statusSub = document.getElementById('status-sub');
+      const statusCard = document.getElementById('status-card');
+
+      const result = await fetchBalance(address);
+
+      balanceValue.classList.remove('loading-pulse');
+
+      if (result) {
+        if (result.balance > 0) {
+          balanceValue.textContent = formatSats(result.balance);
+          balanceSub.textContent = `${result.balance.toLocaleString()} satoshis`;
+          balanceCard.classList.add('funded');
+
+          statusValue.textContent = 'FUNDED';
+          statusValue.classList.add('funded');
+          statusSub.textContent = `${result.txCount} transaction${result.txCount !== 1 ? 's' : ''}`;
+          statusCard.classList.add('funded');
+        } else if (result.funded > 0) {
+          balanceValue.textContent = '0 sats';
+          balanceSub.textContent = 'Spent (trail advanced)';
+
+          statusValue.textContent = 'SPENT';
+          statusSub.textContent = 'Check next address';
+        } else {
+          balanceValue.textContent = '0 sats';
+          balanceSub.textContent = 'Not yet funded';
+
+          statusValue.textContent = 'UNFUNDED';
+          statusSub.textContent = 'Send testnet4 BTC to genesis';
+        }
+      } else {
+        balanceValue.textContent = '?';
+        balanceSub.textContent = 'Could not fetch';
+
+        statusValue.textContent = 'OFFLINE';
+        statusSub.textContent = 'API unavailable';
+      }
+    }
+
+    // ============================================
+    // Helper Functions
+    // ============================================
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    window.copyToClipboard = async function(elementId) {
+      const el = document.getElementById(elementId);
+      const text = el.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        const btn = el.parentElement.querySelector('.copy-btn');
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1500);
+        showToast('Copied to clipboard!');
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    };
+
+    const EXAMPLE_STATES = [
+      '{"counter": 1}',
+      '{"msg": "hello"}',
+      '{"transfer": "alice"}',
+      '{"nonce": 42}'
+    ];
+
+    window.setExample = function(n) {
+      const input = document.getElementById('new-state');
+      input.value = EXAMPLE_STATES[n - 1];
+      input.focus();
+    };
+
+    // ============================================
+    // Initialization
+    // ============================================
 
     function initDemo() {
       trail = new DemoTrail(DEMO_PRIVKEY);
@@ -642,6 +1016,9 @@
 
       // Render trail
       renderTrail();
+
+      // Fetch live balance
+      updateBalanceDisplay(genesis.address);
     }
 
     window.advanceState = function() {
@@ -664,10 +1041,22 @@
         trail.advance(newState);
         renderTrail();
         input.value = '';
+        showToast('State advanced! New address derived.');
+
+        // Scroll to the new node
+        const container = document.getElementById('trail-chain');
+        container.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (err) {
         alert('Error: ' + err.message);
       }
     };
+
+    // Allow Enter key to advance
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('new-state').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') advanceState();
+      });
+    });
 
     // Initialize on load
     initDemo();

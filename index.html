@@ -540,7 +540,7 @@
     <div class="how-it-works">
       <h3>How Blocktrails Work</h3>
       <div class="step-flow">
-        <span class="step key">base_key</span>
+        <span class="step key">prev_key</span>
         <span class="step-arrow">+</span>
         <span class="step state">sha256(state)</span>
         <span class="step-arrow">=</span>
@@ -549,8 +549,8 @@
         <span class="step result">P2TR address</span>
       </div>
       <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted);">
-        Each state creates a unique Bitcoin address. Spending from that address proves the state transition.
-        The chain of spends <em>is</em> the state history — immutably ordered by Bitcoin.
+        Each state chains from the previous key, mirroring Bitcoin's spend chain.
+        The cryptographic chain <em>is</em> the state history — immutably ordered by Bitcoin.
       </p>
     </div>
 
@@ -698,6 +698,18 @@
       return PBase.add(tG).toRawBytes(true);
     }
 
+    // Chained derivation: P = P_base + t₀·G + t₁·G + ... + tₙ·G
+    function deriveChainedPublicKey(publicKeyBase, states) {
+      let P = secp.ProjectivePoint.fromHex(publicKeyBase);
+      for (const state of states) {
+        const t = computeTweak(state);
+        if (t === 0n) throw new Error('Invalid state: tweak is zero');
+        const tG = secp.ProjectivePoint.BASE.multiply(t);
+        P = P.add(tG);
+      }
+      return P.toRawBytes(true);
+    }
+
     function p2trXonly(publicKey) {
       const P = secp.ProjectivePoint.fromHex(publicKey);
       const { x } = P.toAffine();
@@ -766,7 +778,8 @@
 
       genesis(state) {
         this.states = [state];
-        const P = derivePublicKey(this.publicKeyBase, state);
+        // Chained: P₀ = P_base + t₀·G
+        const P = deriveChainedPublicKey(this.publicKeyBase, this.states);
         const wp = p2trXonly(P);
         return {
           state,
@@ -778,7 +791,8 @@
       advance(newState) {
         if (this.states.length === 0) throw new Error('Must call genesis first');
         this.states.push(newState);
-        const P = derivePublicKey(this.publicKeyBase, newState);
+        // Chained: Pₙ = P_base + t₀·G + t₁·G + ... + tₙ·G
+        const P = deriveChainedPublicKey(this.publicKeyBase, this.states);
         const wp = p2trXonly(P);
         return {
           state: newState,
@@ -788,8 +802,10 @@
       }
 
       getAll() {
+        // Each state i uses chained derivation of states[0..i]
         return this.states.map((state, i) => {
-          const P = derivePublicKey(this.publicKeyBase, state);
+          const statesUpToI = this.states.slice(0, i + 1);
+          const P = deriveChainedPublicKey(this.publicKeyBase, statesUpToI);
           const wp = p2trXonly(P);
           return {
             index: i,

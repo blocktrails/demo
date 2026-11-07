@@ -524,6 +524,8 @@
     }
 
     /* Site theme */
+    .how-it-works a { color: var(--accent-dark); text-underline-offset: 3px; }
+    .how-it-works code { font-family: var(--mono); font-size: 0.9em; color: var(--code-fg); }
     h1 span { font-family: var(--body); letter-spacing: 0; }
     h1 { font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; }
     h2, h3 { letter-spacing: -0.03em; }
@@ -590,6 +592,9 @@
       <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--muted);">
         Each state chains from the previous key, mirroring Bitcoin's spend chain.
         The cryptographic chain <em>is</em> the state history — immutably ordered by Bitcoin.
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+        This demo runs the earlier <code>sha256(state)</code> tweak. <a href="/spec/">Spec v0.2</a> uses the BIP-341 TapTweak, which also binds each tweak to the previous public key.
       </p>
     </div>
 

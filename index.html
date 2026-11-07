@@ -5,22 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blocktrails Demo - Testnet4</title>
   <meta name="description" content="Live demo of Blocktrails on Bitcoin testnet4">
+    <meta name="theme-color" content="#f7f8f3">
+  <link rel="canonical" href="https://blocktrails.org/demo/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <meta property="og:title" content="Blocktrails Demo - Testnet4">
+  <meta property="og:description" content="Live demo of Blocktrails on Bitcoin testnet4">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blocktrails.org/demo/">
+  <meta property="og:site_name" content="Blocktrails">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://blocktrails.org/demo/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Blocktrails Demo: Live demonstration of Nostr-native state on Bitcoin.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blocktrails Demo - Testnet4">
+  <meta name="twitter:description" content="Live demo of Blocktrails on Bitcoin testnet4">
+  <meta name="twitter:image" content="https://blocktrails.org/demo/og.png">
+  <meta name="twitter:image:alt" content="Blocktrails Demo: Live demonstration of Nostr-native state on Bitcoin.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
   <style>
-    :root {
-      --bg: #0d1117;
-      --fg: #e6edf3;
-      --muted: #7d8590;
-      --accent: #f7931a;
-      --green: #3fb950;
-      --red: #f85149;
-      --code-bg: #161b22;
-      --border: #30363d;
-      --card-bg: #21262d;
-      --purple: #a371f7;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-family: var(--body);
       background: var(--bg);
       color: var(--fg);
       line-height: 1.6;
@@ -38,7 +52,7 @@
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
     }
-    .back:hover { color: var(--accent); }
+    .back:hover { color: var(--accent-dark); }
     h1 {
       font-size: 2rem;
       font-weight: 600;
@@ -58,8 +72,8 @@
       font-weight: 500;
       margin-left: 0.5rem;
     }
-    .status-live { background: var(--green); color: #000; }
-    .status-pending { background: var(--accent); color: #000; }
+    .status-live { background: var(--green); color: var(--on-accent); }
+    .status-pending { background: var(--accent-dark); color: var(--on-accent); }
 
     /* Hero section with live balance */
     .hero-stats {
@@ -77,7 +91,7 @@
     }
     .stat-card.funded {
       border-color: var(--green);
-      background: rgba(63, 185, 80, 0.1);
+      background: rgba(47, 122, 69, 0.08);
     }
     .stat-label {
       font-size: 0.75rem;
@@ -89,9 +103,9 @@
     .stat-value {
       font-size: 1.5rem;
       font-weight: 700;
-      font-family: monospace;
+      font-family: var(--mono);
     }
-    .stat-value.btc { color: var(--accent); }
+    .stat-value.btc { color: var(--accent-dark); }
     .stat-value.funded { color: var(--green); }
     .stat-sub {
       font-size: 0.8rem;
@@ -106,7 +120,7 @@
 
     /* How it works */
     .how-it-works {
-      background: linear-gradient(135deg, rgba(163, 113, 247, 0.1), rgba(247, 147, 26, 0.1));
+      background: linear-gradient(135deg, rgba(207, 224, 210, 0.55), rgba(237, 124, 44, 0.08));
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem;
@@ -133,12 +147,12 @@
       background: var(--code-bg);
       padding: 0.5rem 0.75rem;
       border-radius: 6px;
-      font-family: monospace;
+      font-family: var(--mono);
       font-size: 0.85rem;
     }
     .step.key { color: var(--purple); }
     .step.state { color: var(--green); }
-    .step.result { color: var(--accent); }
+    .step.result { color: var(--accent-dark); }
     .step-arrow {
       color: var(--muted);
       font-size: 1.2rem;
@@ -176,13 +190,13 @@
     }
     .key-value code {
       flex: 1;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      font-family: var(--mono);
       font-size: 0.85rem;
       background: var(--code-bg);
       padding: 0.5rem 0.75rem;
       border-radius: 6px;
       word-break: break-all;
-      color: #a5d6ff;
+      color: var(--code-fg);
     }
     .copy-btn {
       background: var(--code-bg);
@@ -197,8 +211,8 @@
       justify-content: center;
     }
     .copy-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--accent-dark);
+      color: var(--accent-dark);
     }
     .copy-btn.copied {
       border-color: var(--green);
@@ -206,7 +220,7 @@
     }
     .copy-btn svg { width: 16px; height: 16px; }
     .key-value a {
-      color: var(--accent);
+      color: var(--accent-dark);
       text-decoration: none;
     }
     .key-value a:hover { text-decoration: underline; }
@@ -247,10 +261,10 @@
       transition: all 0.3s;
     }
     .trail-node:hover {
-      border-color: var(--accent);
+      border-color: var(--accent-dark);
     }
     .trail-node.genesis {
-      border-color: var(--accent);
+      border-color: var(--accent-dark);
     }
     .trail-node.current {
       border-color: var(--green);
@@ -274,7 +288,7 @@
       top: -0.75rem;
       right: 1rem;
       background: var(--green);
-      color: #000;
+      color: var(--on-accent);
       font-size: 0.7rem;
       font-weight: 600;
       padding: 0.15rem 0.5rem;
@@ -285,8 +299,8 @@
       position: absolute;
       top: -0.75rem;
       left: 1rem;
-      background: var(--accent);
-      color: #000;
+      background: var(--accent-dark);
+      color: var(--on-accent);
       font-size: 0.7rem;
       font-weight: 600;
       padding: 0.15rem 0.5rem;
@@ -312,8 +326,8 @@
     }
     .node-index {
       background: var(--code-bg);
-      color: var(--accent);
-      font-family: monospace;
+      color: var(--accent-dark);
+      font-family: var(--mono);
       font-size: 0.9rem;
       font-weight: 600;
       width: 2rem;
@@ -325,7 +339,7 @@
     }
     .node-state {
       flex: 1;
-      font-family: monospace;
+      font-family: var(--mono);
       font-size: 0.85rem;
       color: var(--fg);
       background: var(--code-bg);
@@ -351,13 +365,13 @@
       margin-bottom: 0.25rem;
     }
     .node-detail code {
-      font-family: monospace;
+      font-family: var(--mono);
       font-size: 0.8rem;
-      color: #a5d6ff;
+      color: var(--code-fg);
       word-break: break-all;
     }
     .node-detail a {
-      color: var(--accent);
+      color: var(--accent-dark);
       text-decoration: none;
     }
     .node-detail a:hover { text-decoration: underline; }
@@ -393,11 +407,11 @@
       color: var(--fg);
       cursor: pointer;
       transition: all 0.2s;
-      font-family: monospace;
+      font-family: var(--mono);
     }
     .example-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--accent-dark);
+      color: var(--accent-dark);
     }
     .control-row {
       display: flex;
@@ -411,16 +425,16 @@
       border-radius: 6px;
       padding: 0.75rem;
       color: var(--fg);
-      font-family: monospace;
+      font-family: var(--mono);
       font-size: 0.9rem;
     }
     .control-row input:focus {
       outline: none;
-      border-color: var(--accent);
+      border-color: var(--accent-dark);
     }
     .control-row button {
-      background: var(--accent);
-      color: #000;
+      background: var(--accent-dark);
+      color: var(--on-accent);
       border: none;
       border-radius: 6px;
       padding: 0.75rem 1.5rem;
@@ -450,7 +464,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      color: var(--accent);
+      color: var(--accent-dark);
       text-decoration: none;
       font-size: 0.85rem;
       margin-top: 0.5rem;
@@ -470,7 +484,7 @@
       font-size: 0.85rem;
     }
     .footer a {
-      color: var(--accent);
+      color: var(--accent-dark);
       text-decoration: none;
     }
     .footer a:hover { text-decoration: underline; }
@@ -481,7 +495,7 @@
       color: var(--muted);
     }
     .error {
-      background: rgba(248, 81, 73, 0.1);
+      background: rgba(192, 54, 44, 0.08);
       border: 1px solid var(--red);
       border-radius: 8px;
       padding: 1rem;
@@ -495,7 +509,7 @@
       bottom: 2rem;
       right: 2rem;
       background: var(--green);
-      color: #000;
+      color: var(--on-accent);
       padding: 0.75rem 1.25rem;
       border-radius: 8px;
       font-weight: 500;
@@ -508,9 +522,34 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* Site theme */
+    h1 span { font-family: var(--body); letter-spacing: 0; }
+    h1 { font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; }
+    h2, h3 { letter-spacing: -0.03em; }
+    button, input, select, textarea { font-family: inherit; }
+    .stat-card, .info-card, .trail-node, .controls, .how-it-works { border-radius: 16px; box-shadow: 0 12px 30px rgba(41, 54, 43, 0.05); }
   </style>
 </head>
 <body>
+  <header class="site-header static site-nav-page">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="Blocktrails home">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect width="40" height="40" rx="11" fill="#17211B"/>
+          <path d="M10 29.5C15.5 29.5 25.5 28.5 25.5 23.5C25.5 18.5 14.5 20.5 14.5 15.5C14.5 12.8 18 11 23 11" stroke="#F7F8F3" stroke-width="3.2" stroke-linecap="round"/>
+          <rect x="24.5" y="7.5" width="7" height="7" rx="2" fill="#ED7C2C"/>
+        </svg>
+        <span class="brand-name">blocktrails</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="/spec/">Spec</a>
+        <a href="/spec/profiles.html">Profiles</a>
+        <a href="/demo/" aria-current="page">Live Demo</a>
+        <a href="https://github.com/blocktrails">GitHub</a>
+      </nav>
+    </div>
+  </header>
   <main>
     <a href="https://blocktrails.org" class="back">← blocktrails.org</a>
 
